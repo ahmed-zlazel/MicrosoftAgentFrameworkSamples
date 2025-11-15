@@ -22,4 +22,12 @@ public static class Tools
         Local,
         Utc
     }
+    
+    public static string PickRandomColor()
+    {
+        string[] colors = ["red", "blue", "green", "yellow", "purple", "orange", "pink", "black", "white", "gray"];
+        Random random = new();
+        int index = random.Next(colors.Length);
+        return colors[index];
+    }
 }

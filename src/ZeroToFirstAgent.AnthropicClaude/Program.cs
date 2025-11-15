@@ -11,11 +11,12 @@ using Anthropic.SDK;
 using Anthropic.SDK.Constants;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using Shared;
 
-const string apiKey = "<yourApiKey>";
+Configuration configuration = ConfigurationManager.GetConfiguration();
 const string model = AnthropicModels.Claude35Haiku;
 
-AnthropicClient anthropicClient = new AnthropicClient(new APIAuthentication(apiKey));
+AnthropicClient anthropicClient = new AnthropicClient(new APIAuthentication(configuration.AnthropicApiKey));
 
 
 

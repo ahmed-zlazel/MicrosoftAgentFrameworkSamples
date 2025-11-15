@@ -16,10 +16,13 @@ using Azure.AI.Agents.Persistent;
 using Azure.Identity;
 using Microsoft.Agents.AI;
 
-const string endpoint = "<Azure AI Foundry project endpoint>";
-const string model = "<your model>";
+const string endpoint = "https://ahass-mhwvfaep-eastus2.services.ai.azure.com/api/projects/ahass-mhwvfaep-eastus2_project";
+const string model = "gpt-4.1-mini";
 
-PersistentAgentsClient client = new(endpoint, new AzureCliCredential());
+// Use InteractiveBrowserCredential which will open a browser to authenticate
+var credential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions());
+
+PersistentAgentsClient client = new(endpoint, credential);
 
 Response<PersistentAgent>? aiFoundryAgent = null;
 try

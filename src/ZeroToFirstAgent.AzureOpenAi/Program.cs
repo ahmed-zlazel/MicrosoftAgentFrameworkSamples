@@ -12,13 +12,11 @@ using System.ClientModel;
 using Azure.AI.OpenAI;
 using Microsoft.Agents.AI;
 using OpenAI;
+using Shared;
 
-const string endpoint = "https://<yourEndpoint>.openai.azure.com/";
-const string apiKey = "<yourApiKey>";
-const string model = "<yourModelDeploymentName>";
-
-AzureOpenAIClient client = new(new Uri(endpoint), new ApiKeyCredential(apiKey));
-ChatClientAgent agent = client.GetChatClient(model).CreateAIAgent();
+var configuration = ConfigurationManager.GetConfiguration();
+AzureOpenAIClient client = new(new Uri(configuration.AzureOpenAiEndpoint), new ApiKeyCredential(configuration.AzureOpenAiKey));
+ChatClientAgent agent = client.GetChatClient(configuration.ChatDeploymentName).CreateAIAgent();
 
 //Simple Response
 AgentRunResponse response = await agent.RunAsync("What is the capital of France?");

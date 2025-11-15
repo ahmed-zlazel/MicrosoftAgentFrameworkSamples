@@ -19,11 +19,12 @@ AzureOpenAIClient client = new(new Uri(configuration.AzureOpenAiEndpoint), new A
 ChatClientAgent agent = client
     .GetChatClient(configuration.ChatDeploymentName)
     .CreateAIAgent(
-        instructions: "You are a Time Expert",
+        instructions: "You are a Time Expert, always provide the current date, time and timezone when asked. Use the tools to get accurate information.",
         tools:
         [
             AIFunctionFactory.Create(Tools.CurrentDataAndTime, "current_date_and_time"),
-            AIFunctionFactory.Create(Tools.CurrentTimezone, "current_timezone")
+            AIFunctionFactory.Create(Tools.CurrentTimezone, "current_timezone"),
+            AIFunctionFactory.Create(Tools.PickRandomColor, "pick_best_color")
         ]
     );
 

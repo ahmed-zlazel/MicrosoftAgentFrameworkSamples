@@ -10,14 +10,14 @@ using Azure;
 using Azure.AI.Inference;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
+using Shared;
 
-const string gitHubPatToken = "<YourGitHubPATTokenWithModelAccess>";
-const string model = "<yourModelName>"; //Example: deepseek/DeepSeek-V3-0324
+Configuration configuration = ConfigurationManager.GetConfiguration();
 
 ChatClientAgent agent = new ChatCompletionsClient(
     new Uri("https://models.github.ai/inference"),
-    new AzureKeyCredential(gitHubPatToken),
-    new AzureAIInferenceClientOptions()).AsIChatClient(model).CreateAIAgent();
+    new AzureKeyCredential(configuration.GitHubPatToken),
+    new AzureAIInferenceClientOptions()).AsIChatClient(configuration.ChatDeploymentName).CreateAIAgent();
 
 AgentRunResponse response = await agent.RunAsync("What is the Capital of Denmark?");
 Console.WriteLine(response);
