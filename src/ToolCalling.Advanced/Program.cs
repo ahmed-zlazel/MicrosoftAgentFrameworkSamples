@@ -26,6 +26,7 @@ List<AITool> listOfTools = methods.Select(x => AIFunctionFactory.Create(x, targe
 
 //Approval Tools
 listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(DangerousTools.SomethingDangerous)));
+listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(DangerousTools.OpenFile)));
 
 AIAgent agent = client
     .GetChatClient(configuration.ChatDeploymentName)
