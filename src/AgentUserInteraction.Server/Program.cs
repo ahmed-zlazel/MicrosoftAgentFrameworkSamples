@@ -14,7 +14,7 @@ Configuration configuration = ConfigurationManager.GetConfiguration();
 AzureOpenAIClient client = new(new Uri(configuration.AzureOpenAiEndpoint), new ApiKeyCredential(configuration.AzureOpenAiKey));
 
 ChatClientAgent agent = client
-    .GetChatClient("gpt-4.1")
+    .GetChatClient(configuration.ChatDeploymentName)
     .CreateAIAgent(tools: [AIFunctionFactory.Create(GetWeather, name: "get_weather")]);
 
 //AG-UI Part begin
@@ -29,5 +29,6 @@ await app.RunAsync();
 //Server-Tool
 static string GetWeather(string city)
 {
-    return "It is sunny and 19 degrees";
+    var rndInt = new Random().Next(-10, 50);
+    return $"It is sunny and {rndInt} degrees";
 }

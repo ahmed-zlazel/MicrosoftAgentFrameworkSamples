@@ -21,7 +21,7 @@ MethodInfo[] methods = typeof(FileSystemTools).GetMethods(BindingFlags.Public | 
 List<AITool> listOfTools = methods.Select(x => AIFunctionFactory.Create(x, target)).Cast<AITool>().ToList();
 
 AIAgent agent = client
-    .GetChatClient("gpt-4.1-mini")
+    .GetChatClient(configuration.ChatDeploymentName)
     .CreateAIAgent(
         name: "FileAgent",
         instructions: "You are a File Expert. When working with files you need to provide the full path; not just the filename",

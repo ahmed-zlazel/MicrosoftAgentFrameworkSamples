@@ -19,7 +19,7 @@ Utils.Separator();
 Utils.WriteLineDarkGray("Ready for questions");
 AzureOpenAIClient azureOpenAIClient = new AzureOpenAIClient(new Uri(configuration.AzureOpenAiEndpoint), new ApiKeyCredential(configuration.AzureOpenAiKey));
 ChatClientAgent agent = azureOpenAIClient
-    .GetChatClient("gpt-4.1")
+    .GetChatClient(configuration.ChatDeploymentName)
     .CreateAIAgent(
         name: "ClientAgent",
         instructions: "You specialize in handling queries for users and using your tools to provide answers.",

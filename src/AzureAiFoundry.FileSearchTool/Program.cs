@@ -10,7 +10,14 @@ using Shared;
 Console.Clear();
 
 Configuration configuration = ConfigurationManager.GetConfiguration();
-PersistentAgentsClient client = new(configuration.AzureAiFoundryAgentEndpoint, new AzureCliCredential());
+
+var credentialOptions = new InteractiveBrowserCredentialOptions
+{
+    TenantId = "bf388af6-2845-418a-ab23-708197d06f00", // Your tenant ID
+    RedirectUri = new Uri("http://localhost")          // Standard redirect URI for interactive auth
+};
+
+PersistentAgentsClient client = new(configuration.AzureAiFoundryAgentEndpoint, new InteractiveBrowserCredential(credentialOptions));
 
 Response<PersistentAgent>? aiFoundryAgent = null;
 ChatClientAgentThread? chatClientAgentThread = null;
@@ -50,20 +57,29 @@ try
     AIAgent agent = (await client.GetAIAgentAsync(aiFoundryAgent.Value.Id));
 
     AgentThread thread = agent.GetNewThread();
-
-    AgentRunResponse response = await agent.RunAsync("What is word of the day?", thread);
-    Console.WriteLine(response);
-    foreach (ChatMessage message in response.Messages)
+    while (true)
     {
-        foreach (AIContent content in message.Contents)
+
+        Console.Write("> ");
+        string? input = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(input))
         {
-            foreach (AIAnnotation annotation in content.Annotations ?? [])
+            input = "What is word of the day?, and what the secret in the file " + filename;
+        }
+        AgentRunResponse response = await agent.RunAsync( input, thread);
+        Console.WriteLine(response);
+        foreach (ChatMessage message in response.Messages)
+        {
+            foreach (AIContent content in message.Contents)
             {
-                if (annotation is CitationAnnotation citationAnnotation)
+                foreach (AIAnnotation annotation in content.Annotations ?? [])
                 {
-                    string? fileId = citationAnnotation.FileId;
-                    Response<PersistentAgentFileInfo> fileReferenced = await client.Files.GetFileAsync(fileId);
-                    Utils.WriteLineYellow("File referenced: " + fileReferenced.Value.Filename);
+                    if (annotation is CitationAnnotation citationAnnotation)
+                    {
+                        string? fileId = citationAnnotation.FileId;
+                        Response<PersistentAgentFileInfo> fileReferenced = await client.Files.GetFileAsync(fileId);
+                        Utils.WriteLineYellow("File referenced: " + fileReferenced.Value.Filename);
+                    }
                 }
             }
         }

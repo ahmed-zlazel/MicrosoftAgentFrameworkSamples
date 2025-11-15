@@ -12,7 +12,8 @@ Configuration configuration = ConfigurationManager.GetConfiguration();
 
 AzureOpenAIClient client = new(new Uri(configuration.AzureOpenAiEndpoint), new ApiKeyCredential(configuration.AzureOpenAiKey));
 
-ChatClient chatClientMini = client.GetChatClient("gpt-4.1-mini");
+ChatClient chatClientMini = client
+    .GetChatClient(configuration.ChatDeploymentName);
 ChatClient chatClient = client.GetChatClient("gpt-4.1");
 
 Console.Write("> ");

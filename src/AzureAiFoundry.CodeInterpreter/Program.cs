@@ -10,7 +10,7 @@ using Shared;
 Console.Clear();
 
 Configuration configuration = ConfigurationManager.GetConfiguration();
-PersistentAgentsClient client = new(configuration.AzureAiFoundryAgentEndpoint, new AzureCliCredential());
+PersistentAgentsClient client = new(configuration.AzureAiFoundryAgentEndpoint, new InteractiveBrowserCredential());
 
 Response<PersistentAgent>? aiFoundryAgent = null;
 ChatClientAgentThread? chatClientAgentThread = null;
