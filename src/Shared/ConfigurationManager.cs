@@ -51,6 +51,7 @@ public class ConfigurationManager
         string trelloApiKey = configurationRoot["TrelloApiKey"] ?? string.Empty;
         string trelloToken = configurationRoot["TrelloToken"] ?? string.Empty;
         string anthropicApiKey = configurationRoot["AnthropicApiKey"] ?? string.Empty;
+        string azureDevOpsOrg = configurationRoot["AzureDevOpsOrg"] ?? string.Empty;
 
         return new Configuration(
             openAiApiKey,
@@ -69,6 +70,7 @@ public class ConfigurationManager
             xAiGrokApiKey,
             trelloApiKey,
             trelloToken,
-            anthropicApiKey);
+            anthropicApiKey,
+            azureDevOpsOrg);
     }
 }

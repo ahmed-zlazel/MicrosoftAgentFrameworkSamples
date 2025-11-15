@@ -27,13 +27,23 @@ await using McpClient gitHubMcpClient = await McpClient.CreateAsync(new HttpClie
     }
 }));
 
+// Azure DevOps MCP Server
+await using McpClient adoMcpClient = await McpClient.CreateAsync(new StdioClientTransport(new StdioClientTransportOptions
+{
+    Command = "npx",
+    Arguments = ["-y", "@azure-devops/mcp@next", configuration.AzureDevOpsOrg]
+}));
+
+// Combine tools from both servers
 IList<McpClientTool> toolsInGitHubMcp = await gitHubMcpClient.ListToolsAsync();
+IList<McpClientTool> toolsInAdoMcp = await adoMcpClient.ListToolsAsync();
+List<AITool> allTools = toolsInGitHubMcp.Concat<AITool>(toolsInAdoMcp).ToList();
 
 AIAgent agent = client
     .GetChatClient(configuration.ChatDeploymentName)
     .CreateAIAgent(
-        instructions: "You are a GitHub Expert",
-        tools: toolsInGitHubMcp.Cast<AITool>().ToList()
+        instructions: "You are a GitHub and Azure DevOps Expert",
+        tools: allTools
     )
     .AsBuilder()
     .Use(FunctionCallMiddleware) //Middleware
