@@ -73,7 +73,7 @@ public class FileSystemTools
         }
 
         Guard(folderPath);
-        Directory.Delete(folderPath);
+        Directory.Delete(folderPath, true);
     }
 
     public void DeleteFile(string filePath)

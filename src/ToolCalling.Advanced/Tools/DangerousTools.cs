@@ -6,4 +6,13 @@ public class DangerousTools
     {
         Console.WriteLine($"Did something dangerous with the value: {value}");
     }
+    
+    public static void OpenFile(string filePath)
+    {
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = filePath,
+            UseShellExecute = true
+        });
+    }
 }
