@@ -19,7 +19,7 @@ ChatClientAgent agent = new ChatCompletionsClient(
     new AzureKeyCredential(configuration.GitHubPatToken),
     new AzureAIInferenceClientOptions()).AsIChatClient(configuration.ChatDeploymentName).CreateAIAgent();
 
-AgentRunResponse response = await agent.RunAsync("What is the Capital of Denmark?");
+AgentRunResponse response = await agent.RunAsync("What is the MAF?");
 Console.WriteLine(response);
 
 Console.WriteLine("---");
